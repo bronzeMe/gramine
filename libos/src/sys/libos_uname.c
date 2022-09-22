@@ -14,6 +14,7 @@
 #include "api.h"
 #include "libos_internal.h"
 #include "libos_table.h"
+#include "libos_uname.h"
 
 /* This structure is *not* shared between Gramine processes, despite it should. As a result,
  * effects of set{host,domain}name in process A will not be visible in process B.
@@ -69,5 +70,19 @@ long libos_syscall_setdomainname(char* name, int len) {
 
     memcpy(&g_current_uname.domainname, name, len);
     memset(&g_current_uname.domainname[len], 0, sizeof(g_current_uname.domainname) - len);
+    return 0;
+}
+
+long init_uname(void) {
+    if (g_pal_public_state->libos_hostname) {
+        char* hostname = strdup(g_pal_public_state->libos_hostname);
+        if (!hostname)
+            return -ENOMEM;
+        int hostname_len = strlen(hostname);
+        if (hostname_len < 0 || (size_t)hostname_len >= sizeof(g_current_uname.nodename))
+            return -EINVAL;
+        return set_hostname(hostname,hostname_len);
+    }
+
     return 0;
 }

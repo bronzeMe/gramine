@@ -125,6 +125,7 @@ struct pal_dns_host_conf {
 /* Part of PAL state which is shared between all PALs and accessible (read-only) by the binary
  * started by PAL (usually our LibOS). */
 struct pal_public_state {
+    const char* libos_hostname;
     const char* host_type;
     const char* attestation_type; /* currently only for Linux-SGX */
 

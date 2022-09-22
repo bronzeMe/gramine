@@ -2,6 +2,7 @@
 
 loader.entrypoint = "file:{{ gramine.libos }}"
 libos.entrypoint = "{{ entrypoint }}"
+libos.hostname = "tee-cluster-sgx2"
 
 loader.log_level = "{{ log_level }}"
 

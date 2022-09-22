@@ -17,6 +17,7 @@
 #include "libos_fs_lock.h"
 #include "libos_handle.h"
 #include "libos_internal.h"
+#include "libos_uname.h"
 #include "libos_ipc.h"
 #include "libos_lock.h"
 #include "libos_process.h"
@@ -417,7 +418,7 @@ noreturn void libos_init(const char* const* argv, const char* const* envp) {
     } else {
         g_process_ipc_ids.self_vmid = STARTING_VMID;
     }
-
+    RUN_INIT(init_uname);
     RUN_INIT(init_ipc);
     RUN_INIT(init_process);
     RUN_INIT(init_mount_root);

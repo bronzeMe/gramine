@@ -459,6 +459,12 @@ noreturn void pal_main(uint64_t instance_id,       /* current instance id */
     }
     assert(argv0_override);
 
+    char* libos_hostname = NULL;
+    ret = toml_string_in(g_pal_public_state.manifest_root, "libos.hostname", &libos_hostname);
+    if (ret < 0)
+        INIT_FAIL_MANIFEST("Cannot parse 'libos.hostname'");
+    g_pal_public_state.libos_hostname = libos_hostname;
+
     if (use_cmdline_argv) {
         if (!parent_process) {
             /* argv[0] in host cmdline args is the name of manifest, but app expects the entrypoint */
